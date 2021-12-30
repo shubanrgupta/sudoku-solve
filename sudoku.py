@@ -1,52 +1,5 @@
 from array import *
 
-#making blank puzzle
-m = 9
-n = 9  
-a = [[0 for x in range(n)] for x in range(m)]
-
-#assigning no. to puzzle
-a[0][2]=8
-a[0][5]=5
-a[0][6]=6
-a[0][8]=2
-a[1][1]=2
-a[1][3]=7
-a[1][6]=8
-a[1][8]=5
-a[2][0]=5
-a[2][2]=1
-a[2][4]=2
-a[2][5]=8
-a[2][6]=7
-a[2][7]=3
-a[3][5]=6
-a[3][7]=2
-a[3][8]=8
-a[4][0]=8
-a[4][2]=2
-a[4][3]=1
-a[4][4]=5
-a[4][6]=9
-a[5][3]=2
-a[5][4]=8
-a[5][5]=4
-a[5][7]=7
-a[6][1]=8
-a[6][2]=4
-a[6][7]=5
-a[7][2]=3
-a[7][3]=5
-a[7][4]=4
-a[7][7]=8
-a[7][8]=7
-a[8][0]=2
-a[8][1]=5
-a[8][2]=7
-a[8][3]=8
-a[8][6]=4
-a[8][8]=9
-
 #puzzle print function
 def printing(puzzle):
     for i in range(9):
@@ -64,7 +17,7 @@ def check_row(rowno, puzzle):
         print("tru")
         return True 
     else:
-        print("false")
+        print("falserow", rowno)
         return False
 
 #check if specific column has repititions 
@@ -77,7 +30,7 @@ def check_col(colno, puzzle):
         print("tru")
         return True 
     else:
-        print("false")
+        print("falsecol", colno)
         return False
 
 #check if 3x3 matrix has repititions. Only works if row and column have no repititions
@@ -107,7 +60,7 @@ def check_box(puzzle):
         print("tru")
         return True
 
-#check if possible
+#check if current iteration is valid, prints 0, 1, 2 or 3 based on type of mistake
 def checkarow(puzzle):
     checkm=0
     for row in range(0,9):
@@ -144,6 +97,9 @@ def emptylist(puzzle):
                 emptyrow.append(row)
                 emptycol.append(col)
 
+
+
+#inputs the puzzle: use 0 for empty boxes
 m = 9
 n = 9  
 arr= [[0 for x in range(n)] for x in range(m)]
@@ -157,26 +113,29 @@ emptylist(arr)
 
 def solve (puzzle):
     index=0
-    while index != emptynum:
-        puzzle[emptyrow[index]][emptycol[index]]+=1
-        if puzzle[emptyrow[index]][emptycol[index]]==9:
-            if checkarow(puzzle):
-                index+=1
-            else:
+    if checkarow(puzzle):
+        while index != emptynum:
+            print("index", index)
+            puzzle[emptyrow[index]][emptycol[index]]+=1
+            print(puzzle[emptyrow[index]][emptycol[index]], "indval")
+            if puzzle[emptyrow[index]][emptycol[index]]==9:
+                if checkarow(puzzle):
+                    index+=1
+                else:
+                    puzzle[emptyrow[index]][emptycol[index]]=0
+                    index-=1
+            elif puzzle[emptyrow[index]][emptycol[index]]>9:
                 puzzle[emptyrow[index]][emptycol[index]]=0
                 index-=1
-        elif puzzle[emptyrow[index]][emptycol[index]]>9:
-            puzzle[emptyrow[index]][emptycol[index]]=0
-            index-=1
-        elif checkarow(puzzle):
-            index+=1
-        printing(puzzle)
-    
-
-
-#emptylist(arr)
-#emptynum=len(emptycol)
+            elif checkarow(puzzle):
+                index+=1
+            printing(puzzle)
+    else:
+        print("invalid puzzle")
+		
+#calling final functions		
 emptynum=len(emptycol)
 print(emptycol)
+checkarow(arr)
 solve(arr)
 
